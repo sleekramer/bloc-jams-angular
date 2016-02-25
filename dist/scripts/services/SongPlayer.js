@@ -24,6 +24,8 @@
                     formats: ['mp3'],
                     preload: true
                 });
+                SongPlayer.volume = SongPlayer.volume || 80;
+                SongPlayer.setVolume(SongPlayer.volume);
             
                 currentBuzzObject.bind('timeupdate', function () {
                     $rootScope.$apply(function() {
@@ -71,6 +73,11 @@
         * @type {Number}
         */
         SongPlayer.currentTime = null;
+        /**
+        * @desc Current volume of currently playing song
+        * @type {Number}
+        */
+        SongPlayer.volume = null;
         /**
         * @function SongPlayer.play
         * @desc sets and plays song 
@@ -143,6 +150,17 @@
             if (currentBuzzObject) {
                 currentBuzzObject.setTime(time);
             }  
+        };
+        /**
+        * @function setVolume
+        * @desc Set current volume of currently playing song
+        * @param {Number} volume
+        */
+        SongPlayer.setVolume = function (volume) {
+            if (currentBuzzObject) {
+                currentBuzzObject.setVolume(volume);
+                SongPlayer.volume = volume;
+            }
         };
         
         return SongPlayer;
