@@ -5,10 +5,9 @@
             if (Number.isNaN(seconds)) {
                 return "- : - -";
             }
-            var minutes = Math.floor(seconds / 60);
-            seconds = Math.floor(seconds % 60);
-            seconds = seconds < 10 ? '0' + seconds : seconds;
-            return minutes + ':' + seconds;
+            var buzzTime = buzz.toTimer(seconds);
+            buzzTime = seconds < 600 ? buzzTime.slice(1) : buzzTime; 
+            return buzzTime;
         };
     }
 
