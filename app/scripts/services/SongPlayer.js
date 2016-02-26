@@ -1,5 +1,6 @@
 (function () {
-    function SongPlayer($rootScope, Fixtures) {
+    function SongPlayer(Fixtures) {
+        var registeredControllerScopes = [];
         var SongPlayer = {};
         /**
         * @desc stores the current album object from Fixtures service
@@ -28,13 +29,16 @@
                 SongPlayer.setVolume(SongPlayer.volume);
             
                 currentBuzzObject.bind('timeupdate', function () {
-                    $rootScope.$apply(function() {
-                        SongPlayer.currentTime = currentBuzzObject.getTime(); 
+                    angular.forEach(registeredControllerScopes, function(scope) {
+                        scope.$apply(function() {
+                            SongPlayer.currentTime = currentBuzzObject.getTime();
+                        });
                     });
                 });    
             
                 SongPlayer.currentSong = song;
         };
+        
         /**
         * @function playSong
         * @desc plays the curentBuzzObject and sets .playing property of song to true
@@ -62,6 +66,9 @@
         */
         var getSongIndex = function (song) {
             return currentAlbum.songs.indexOf(song);  
+        };
+        SongPlayer.registerScope = function(scope) {
+            registeredControllerScopes.push(scope);
         };
         /**
         * @desc SongPlayer.song object from Fixtures.js
@@ -168,5 +175,5 @@
     
     angular 
         .module('blocJams')
-        .factory('SongPlayer', ["$rootScope", "Fixtures", SongPlayer]);
+        .factory('SongPlayer', SongPlayer);
 })();
