@@ -24,6 +24,9 @@
                     formats: ['mp3'],
                     preload: true
                 });
+                if (SongPlayer.isMuted) {
+                    currentBuzzObject.mute();
+                }
                 SongPlayer.volume = SongPlayer.volume || 80;
                 SongPlayer.setVolume(SongPlayer.volume);
 
@@ -120,6 +123,7 @@
                 stopSong(SongPlayer.currentSong);
                 SongPlayer.currentSong = null;
                 currentBuzzObject = null;
+                SongPlayer.isMuted = false;
             } else {
                 var song = currentAlbum.songs[currentSongIndex];
                 setSong(song);
@@ -138,6 +142,7 @@
                 stopSong(SongPlayer.currentSong);
                 SongPlayer.currentSong = null;
                 currentBuzzObject = null;
+                SongPlayer.isMuted = false;
             } else {
                 var song = currentAlbum.songs[currentSongIndex];
                 setSong(song);
@@ -163,6 +168,31 @@
             if (currentBuzzObject) {
                 currentBuzzObject.setVolume(volume);
                 SongPlayer.volume = volume;
+            }
+        };
+        /**
+        * @desc keeps track of whether the sound should be muted
+        * @type {Boolean}
+        */
+        SongPlayer.isMuted = false;
+        /**
+        * @function muteSound
+        * @desc Mute the sound of the currentBuzzObject
+        */
+        SongPlayer.muteSound = function () {
+            if (currentBuzzObject) {
+                currentBuzzObject.mute();
+                SongPlayer.isMuted = true;
+            }
+        };
+        /**
+        * @function unmuteSound
+        * @desc Unmute the sound of the currentBuzzObject
+        */
+        SongPlayer.unmuteSound = function () {
+            if (currentBuzzObject) {
+                currentBuzzObject.unmute();
+                SongPlayer.isMuted = false;
             }
         };
 
